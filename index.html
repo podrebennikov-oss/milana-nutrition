@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Питание — курс для Миланы</title>
+<style>
+  :root {
+    --bg: #fff8f3;
+    --card: #ffffff;
+    --ink: #2d2a32;
+    --muted: #7a7580;
+    --accent: #ff6b6b;
+    --accent2: #845ef7;
+    --green: #2f9e44;
+    --green-bg: #ebfbee;
+    --yellow: #e8930c;
+    --yellow-bg: #fff9db;
+    --red: #e03131;
+    --red-bg: #fff0f0;
+    --radius: 20px;
+    --shadow: 0 4px 20px rgba(45, 42, 50, .08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+
+  header {
+    text-align: center;
+    padding: 48px 16px 24px;
+  }
+  header h1 {
+    font-size: clamp(28px, 6vw, 44px);
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 8px;
+  }
+  header p { color: var(--muted); font-size: 17px; max-width: 520px; margin: 0 auto; }
+
+  .progress-box {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 24px;
+    margin: 16px 0 32px;
+  }
+  .progress-label {
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600; margin-bottom: 10px; font-size: 15px;
+  }
+  .progress-track {
+    height: 14px; border-radius: 7px; background: #f1edf7; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 7px;
+    transition: width .5s ease;
+  }
+  #all-done {
+    display: none; margin-top: 12px; text-align: center; font-weight: 700;
+    color: var(--accent2); font-size: 17px;
+  }
+
+  h2.section {
+    font-size: 24px; margin: 48px 0 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .food-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .food-card { border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .food-card.green { background: var(--green-bg); }
+  .food-card.yellow { background: var(--yellow-bg); }
+  .food-card.red { background: var(--red-bg); }
+  .food-card h3 { font-size: 17px; margin-bottom: 4px; }
+  .food-card.green h3 { color: var(--green); }
+  .food-card.yellow h3 { color: var(--yellow); }
+  .food-card.red h3 { color: var(--red); }
+  .food-card .sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .food-card ul { list-style: none; }
+  .food-card li { padding: 3px 0; font-size: 15px; }
+
+  .fastfood-block {
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 24px;
+  }
+  .fastfood-block p { margin-bottom: 12px; }
+  .consequences { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 8px; }
+  .cons-item {
+    background: var(--red-bg); border-radius: 14px; padding: 12px 14px; font-size: 15px;
+  }
+  .cons-item b { display: block; margin-bottom: 2px; }
+  .fastfood-note {
+    margin-top: 16px; background: var(--green-bg); border-radius: 14px; padding: 12px 16px; font-size: 15px;
+  }
+
+  .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .day-card {
+    background: var(--card); border: none; border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 18px 16px; text-align: left; cursor: pointer; font-family: inherit; color: inherit;
+    transition: transform .15s ease, box-shadow .15s ease;
+    position: relative;
+  }
+  .day-card:hover { transform: translateY(-3px); box-shadow: 0 8px 26px rgba(45,42,50,.14); }
+  .day-card .emoji { font-size: 30px; }
+  .day-card .num { font-size: 12px; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: .05em; margin-top: 8px; }
+  .day-card .t { font-size: 15px; font-weight: 700; line-height: 1.3; margin-top: 2px; }
+  .day-card .done-badge {
+    position: absolute; top: 12px; right: 12px; font-size: 20px; display: none;
+  }
+  .day-card.done { background: var(--green-bg); }
+  .day-card.done .done-badge { display: block; }
+
+  /* Day view */
+  #day-view { display: none; }
+  .back-btn {
+    background: var(--card); border: none; border-radius: 12px; box-shadow: var(--shadow);
+    padding: 10px 18px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;
+    margin: 24px 0 20px; color: var(--ink);
+  }
+  .back-btn:hover { background: #f6f1fb; }
+  .day-head .num { color: var(--accent2); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 14px; }
+  .day-head h2 { font-size: clamp(22px, 5vw, 32px); margin: 4px 0 10px; }
+  .day-head p.desc { color: var(--muted); font-size: 16px; margin-bottom: 20px; max-width: 640px; }
+
+  .video-box {
+    background: #000; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    aspect-ratio: 16 / 9;
+  }
+  .video-box iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .video-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 12px 0 28px; }
+  .video-meta .vt { font-size: 14px; color: var(--muted); }
+  .yt-link {
+    font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none;
+    background: var(--red-bg); padding: 8px 14px; border-radius: 10px; white-space: nowrap;
+  }
+  .yt-link:hover { text-decoration: underline; }
+
+  .fact-box {
+    background: linear-gradient(135deg, #f3edff, #ffeef0);
+    border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; font-size: 15px;
+  }
+  .fact-box b { color: var(--accent2); }
+
+  .quiz-box { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+  .quiz-box h3 { font-size: 17px; margin-bottom: 4px; }
+  .quiz-box .q { font-size: 16px; margin-bottom: 14px; }
+  .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-opt {
+    text-align: left; font-family: inherit; font-size: 15px; padding: 12px 16px;
+    border-radius: 12px; border: 2px solid #eee7f5; background: #faf8fd; cursor: pointer; color: var(--ink);
+    transition: border-color .15s;
+  }
+  .quiz-opt:hover { border-color: var(--accent2); }
+  .quiz-opt.correct { border-color: var(--green); background: var(--green-bg); font-weight: 700; }
+  .quiz-opt.wrong { border-color: var(--red); background: var(--red-bg); }
+  .quiz-result { margin-top: 14px; font-weight: 700; display: none; }
+  .quiz-result.ok { color: var(--green); display: block; }
+  .quiz-result.no { color: var(--red); display: block; }
+
+  .mark-done {
+    margin-top: 20px; width: 100%; padding: 14px; font-size: 16px; font-weight: 700;
+    border: none; border-radius: 14px; cursor: pointer; font-family: inherit;
+    background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff;
+  }
+  .mark-done:disabled { background: var(--green); cursor: default; }
+
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 64px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🍎 Питание: курс для Миланы</h1>
+    <p>14 дней — 14 коротких тем с видео. Смотри по одному в день, отвечай на вопрос и собирай прогресс!</p>
+  </header>
+
+  <div class="progress-box">
+    <div class="progress-label">
+      <span>Твой прогресс</span>
+      <span id="progress-text">0 из 14</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div id="all-done">🎉 Ура! Ты прошла весь курс! Теперь ты знаешь про еду больше многих взрослых!</div>
+  </div>
+
+  <div id="main-view">
+
+    <h2 class="section">🚦 База: что есть, а что — пореже</h2>
+    <div class="food-cols">
+      <div class="food-card green">
+        <h3>🟢 Можно каждый день</h3>
+        <div class="sub">Это твоё топливо и стройматериалы</div>
+        <ul>
+          <li>🥦 Овощи и зелень</li>
+          <li>🍏 Фрукты и ягоды</li>
+          <li>🍚 Каши, крупы, макароны</li>
+          <li>🍗 Мясо, рыба, яйца</li>
+          <li>🥛 Творог, йогурт, сыр</li>
+          <li>🥜 Орехи</li>
+          <li>🍞 Хлеб (лучше цельнозерновой)</li>
+          <li>💧 Вода</li>
+        </ul>
+      </div>
+      <div class="food-card yellow">
+        <h3>🟡 Иногда — норм</h3>
+        <div class="sub">Пару раз в неделю, не вместо еды</div>
+        <ul>
+          <li>🍫 Шоколад и сладости</li>
+          <li>🧁 Выпечка, печенье</li>
+          <li>🧃 Пакетированные соки</li>
+          <li>🍦 Мороженое</li>
+          <li>🍟 Картошка фри</li>
+          <li>🍕 Пицца, бургеры</li>
+        </ul>
+      </div>
+      <div class="food-card red">
+        <h3>🔴 Как можно реже</h3>
+        <div class="sub">Пользы ноль, а вреда много</div>
+        <ul>
+          <li>🥤 Сладкая газировка</li>
+          <li>⚡ Энергетики</li>
+          <li>🍬 Конфеты пакетами</li>
+          <li>🍜 Лапша быстрого приготовления</li>
+          <li>🌭 Сосиски и колбаса каждый день</li>
+          <li>🍿 Чипсы и сухарики</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section">🍔 А что будет, если есть только фастфуд и сладкое?</h2>
+    <div class="fastfood-block">
+      <p>Ничего страшного не случится от одного бургера или конфеты. Но если питаться <b>только</b> фастфудом и сладким каждый день, организм начнёт «ломаться» — и вот как:</p>
+      <div class="consequences">
+        <div class="cons-item"><b>🔋 Энергия скачет</b>Сахар даёт заряд на 20 минут, а потом резко бросает — и ты как выжатый лимон.</div>
+        <div class="cons-item"><b>🧠 Мозг тупит</b>Сложнее сосредоточиться на уроках, хуже запоминается. Мозгу нужна нормальная еда.</div>
+        <div class="cons-item"><b>😴 Постоянная усталость</b>Витаминов нет, железа нет — сил тоже нет, даже если много спать.</div>
+        <div class="cons-item"><b>🦷 Зубы страдают</b>Сахар — любимая еда бактерий, которые делают дырки в зубах.</div>
+        <div class="cons-item"><b>🌋 Кожа и прыщи</b>Много сахара и жирного — и кожа отвечает высыпаниями.</div>
+        <div class="cons-item"><b>🤢 Живот бунтует</b>Тяжесть, вздутие: полезным бактериям в животе нечем питаться без овощей.</div>
+      </div>
+      <div class="fastfood-note">💚 Хорошая новость: правило «80/20» — если 80% еды нормальная, то оставшиеся 20% могут быть чем угодно. Вкусняшки не запрещены!</div>
+    </div>
+
+    <h2 class="section">📅 14 дней — 14 видео</h2>
+    <div class="days-grid" id="days-grid"></div>
+
+  </div>
+
+  <div id="day-view">
+    <button class="back-btn" onclick="showMain()">← Ко всем дням</button>
+    <div class="day-head">
+      <div class="num" id="dv-num"></div>
+      <h2 id="dv-title"></h2>
+      <p class="desc" id="dv-desc"></p>
+    </div>
+    <div class="video-box" id="dv-video"></div>
+    <div class="video-meta">
+      <span class="vt" id="dv-vt"></span>
+      <a class="yt-link" id="dv-link" href="#" target="_blank" rel="noopener">▶ Смотреть на YouTube</a>
+    </div>
+    <div class="fact-box" id="dv-fact"></div>
+    <div class="quiz-box">
+      <h3>🧩 Проверь себя</h3>
+      <p class="q" id="dv-q"></p>
+      <div class="quiz-opts" id="dv-opts"></div>
+      <p class="quiz-result" id="dv-result"></p>
+      <button class="mark-done" id="dv-done" onclick="markDone()">✔ День пройден!</button>
+    </div>
+  </div>
+
+  <footer>Сделано с ❤️ для Миланы · Видео принадлежат их авторам на YouTube</footer>
+</div>
+
+<script>
+const DAYS = [
+  {
+    emoji: "🧱", title: "Из чего сделана еда: белки, жиры, углеводы",
+    desc: "Еда — это не просто «вкусно». Это стройматериалы и топливо для тела. Белки строят мышцы, углеводы дают энергию, жиры кормят мозг. Разберёмся, кто за что отвечает.",
+    video: "l7pSLIC_euQ", vt: "«Биология с нуля — Белки, Жиры, Углеводы»",
+    fact: "<b>Факт дня:</b> твой мозг — на 60% из жира! Поэтому совсем без жиров нельзя.",
+    q: "Что из этого — главный «стройматериал» для тела?",
+    opts: ["Белки", "Сахар", "Газировка"], correct: 0
+  },
+  {
+    emoji: "💪", title: "Белки: из чего построено всё живое",
+    desc: "Мышцы, кожа, волосы, ногти и даже иммунитет — всё это делается из белков. Смотри, как они устроены и где их брать: мясо, рыба, яйца, творог, фасоль, орехи.",
+    video: "CGP3HcRjzx0", vt: "«Белки: из чего состоит всё живое» — ПостНаука",
+    fact: "<b>Факт дня:</b> волосы — это почти чистый белок кератин. Хочешь красивые волосы — ешь белок!",
+    q: "В каких продуктах больше всего белка?",
+    opts: ["В яйцах, твороге и мясе", "В конфетах", "В чипсах"], correct: 0
+  },
+  {
+    emoji: "⚡", title: "Углеводы: быстрые и медленные",
+    desc: "Углеводы — главное топливо. Но они бывают разные: каша и макароны дают энергию на несколько часов, а конфета — минут на 20, потом накрывает усталость.",
+    video: "GC9DrqbJ6A0", vt: "«Что такое углеводы и с чем их едят?»",
+    fact: "<b>Факт дня:</b> овсянка на завтрак «горит» в организме до самого обеда — как большое полено в костре. А конфета — как бумажка: вспыхнула и всё.",
+    q: "Какие углеводы дают энергию надолго?",
+    opts: ["Медленные: каши, крупы, макароны", "Быстрые: конфеты и сахар", "Любые, разницы нет"], correct: 0
+  },
+  {
+    emoji: "💧", title: "Вода: зачем и сколько пить",
+    desc: "Ты примерно на 60% состоишь из воды. Когда её не хватает, первым страдает мозг: усталость, головная боль, плохое настроение. И нет, газировка воду не заменяет.",
+    video: "wyZd22JYA4g", vt: "«Сколько воды пить, чтобы быть здоровым?»",
+    fact: "<b>Факт дня:</b> чувство «хочу есть» иногда на самом деле «хочу пить». Попробуй сначала выпить воды!",
+    q: "Что лучше всего пить, когда хочется пить?",
+    opts: ["Обычную воду", "Сладкую газировку", "Энергетик"], correct: 0
+  },
+  {
+    emoji: "🌈", title: "Витамины: невидимые помощники",
+    desc: "Витамины не дают энергию, но без них в организме ничего не работает как надо. Смешарики из «Пин-кода» объяснят это лучше любого учебника.",
+    video: "OSFsdjnmdns", vt: "«Зачем организму витамины?» — Смешарики Пин-код",
+    fact: "<b>Факт дня:</b> правило радуги: чем больше разных цветов еды на тарелке за день, тем больше разных витаминов ты получила.",
+    q: "Как проще всего получать разные витамины?",
+    opts: ["Есть разноцветные овощи и фрукты", "Есть всегда один любимый продукт", "Пить газировку с надписью «витамины»"], correct: 0
+  },
+  {
+    emoji: "🥦", title: "Овощи и фрукты: почему каждый день",
+    desc: "В овощах и фруктах есть клетчатка — еда для полезных бактерий, которые живут у тебя в животе и помогают всему организму. Им тоже надо что-то есть!",
+    video: "tKLGdQYQh3E", vt: "«Овощи и фрукты. Почему важно их употреблять ежедневно»",
+    fact: "<b>Факт дня:</b> в твоём кишечнике живёт около 2 кг бактерий. Хорошие питаются овощами, вредные — сахаром. Кого покормишь, тот и победит!",
+    q: "Сколько порций овощей и фруктов советуют есть в день?",
+    opts: ["Около пяти", "Одну в неделю", "Ноль, это для кроликов"], correct: 0
+  },
+  {
+    emoji: "🍳", title: "Завтрак: кнопка включения мозга",
+    desc: "Завтрак запускает организм после сна. Без него на первых уроках сложнее думать, а к обеду страшно тянет на сладкое и вредное.",
+    video: "OM7BtQKhYlk", vt: "«Почему завтрак важен?» — Доктор 24",
+    fact: "<b>Факт дня:</b> слово «завтрак» — от «за утро». Лучший вариант: медленные углеводы + белок. Например, каша + яйцо.",
+    q: "Что бывает, если пропустить завтрак?",
+    opts: ["Сложнее сосредоточиться и тянет на сладкое", "Ничего не меняется", "Появляется суперсила"], correct: 0
+  },
+  {
+    emoji: "🍭", title: "Сахар: почему сложно остановиться",
+    desc: "Почему одной конфетой никогда не заканчивается? «Редакция.Наука» рассказывает, как сахар обманывает мозг и где он прячется (спойлер: даже в кетчупе).",
+    video: "V-IcqkKKSx8", vt: "«Сахар — врождённая зависимость?» — Редакция.Наука",
+    fact: "<b>Факт дня:</b> норма сахара для подростка — не больше 6 чайных ложек в день. В одном стакане сока — уже почти вся норма.",
+    q: "Почему сложно остановиться на одной конфете?",
+    opts: ["Мозг воспринимает сахар как награду и просит ещё", "Конфеты волшебные", "Из-за красивого фантика"], correct: 0
+  },
+  {
+    emoji: "🥤", title: "Газировка: что в банке на самом деле",
+    desc: "А что, если пить только газировку вместо воды? Научпок разбирает по науке — коротко, смешно и немного страшно.",
+    video: "4hh7HyuCbbw", vt: "«Что, если пить только газировку?» — Научпок",
+    fact: "<b>Факт дня:</b> в одной банке колы (0,33 л) — около 9 чайных ложек сахара. Никто бы не съел столько ложками, а выпить — легко.",
+    q: "Сколько примерно сахара в банке колы?",
+    opts: ["Около 9 чайных ложек", "Половина ложки", "Сахара там нет"], correct: 0
+  },
+  {
+    emoji: "🍔", title: "Эксперимент: месяц только на фастфуде",
+    desc: "Блогер Mamix целый месяц ел только фастфуд и следил, что происходит с телом, кожей, весом и настроением. Смотри, чем всё закончилось.",
+    video: "wL3v-L73f-g", vt: "«Что если 1 месяц есть только фастфуд?» — Mamix",
+    fact: "<b>Факт дня:</b> в одном обеде из бургера, картошки и колы может быть больше калорий, чем нужно на полдня — а витаминов почти ноль.",
+    q: "Как чувствует себя человек после недель на одном фастфуде?",
+    opts: ["Усталость, тяжесть, плохое настроение", "Прилив сил и бодрости", "Вообще ничего не меняется"], correct: 0
+  },
+  {
+    emoji: "🎬", title: "Фастфуд: так вредно или нет?",
+    desc: "Этот фильм сняли подростки — они сами разобрались, правда ли фастфуд так страшен, как говорят взрослые. Спойлер: всё дело в количестве.",
+    video: "2QQ-LN5oIsA", vt: "«Фастфуд: так вредно или нет?» — фильм",
+    fact: "<b>Факт дня:</b> вредит не сам бургер, а привычка есть его каждый день вместо нормальной еды.",
+    q: "Бургер раз в месяц — это катастрофа?",
+    opts: ["Нет: вредна регулярность, а не редкий раз", "Да, один бургер сразу всё портит", "Бургеры полезнее овощей"], correct: 0
+  },
+  {
+    emoji: "🧠", title: "Еда и мозг: связь с настроением и учёбой",
+    desc: "Оказывается, еда влияет не только на тело, но и на память, внимание и даже настроение. Полезно знать перед контрольной!",
+    video: "PjbdWPR5mT0", vt: "«Как еда влияет на наш мозг»",
+    fact: "<b>Факт дня:</b> «гормон счастья» серотонин на 90% производится в кишечнике. Буквально: что ешь — так себя и чувствуешь.",
+    q: "На что влияет еда, кроме тела?",
+    opts: ["На настроение, память и внимание", "Только на вес", "Ни на что больше"], correct: 0
+  },
+  {
+    emoji: "🔎", title: "Детектив в магазине: читаем этикетки",
+    desc: "Суперспособность: за 10 секунд понять, что на самом деле внутри продукта. Главный секрет — состав пишут по порядку: чего больше всего, то стоит первым.",
+    video: "9ovNXSYT4E0", vt: "«Как читать этикетки на продуктах за 10 минут»",
+    fact: "<b>Факт дня:</b> сахар на этикетках прячется под именами: глюкозный сироп, фруктоза, мальтодекстрин, патока. Хитро, да?",
+    q: "Если сахар стоит первым в составе — что это значит?",
+    opts: ["Сахара в продукте больше всего", "Сахара там почти нет", "Продукт суперполезный"], correct: 0
+  },
+  {
+    emoji: "🎒", title: "Перекусы: что взять в школу вместо чипсов",
+    desc: "Финал курса — практика! Собираем вкусные перекусы, которые реально дают энергию до конца уроков, а не на 15 минут.",
+    video: "S8ZdiN4kK2w", vt: "«5 рецептов перекусов в школу»",
+    fact: "<b>Факт дня:</b> идеальный перекус = что-то сытное + фрукт. Например: бутерброд с сыром + яблоко, или йогурт + банан + орешки.",
+    q: "Какой перекус даст энергию до конца уроков?",
+    opts: ["Бутерброд с сыром, орехи и фрукт", "Пачка чипсов", "Батончик и кола"], correct: 0
+  }
+];
+
+const STORE_KEY = "milana-nutrition-done";
+let currentDay = null;
+
+function getDone() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+  catch { return []; }
+}
+function saveDone(arr) { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+
+function renderGrid() {
+  const grid = document.getElementById("days-grid");
+  const done = getDone();
+  grid.innerHTML = "";
+  DAYS.forEach((d, i) => {
+    const btn = document.createElement("button");
+    btn.className = "day-card" + (done.includes(i) ? " done" : "");
+    btn.onclick = () => showDay(i);
+    btn.innerHTML = `<span class="done-badge">✅</span><div class="emoji">${d.emoji}</div><div class="num">День ${i + 1}</div><div class="t">${d.title}</div>`;
+    grid.appendChild(btn);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = getDone();
+  const pct = Math.round(done.length / DAYS.length * 100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-text").textContent = `${done.length} из ${DAYS.length}`;
+  document.getElementById("all-done").style.display = done.length === DAYS.length ? "block" : "none";
+}
+
+function showDay(i) {
+  currentDay = i;
+  const d = DAYS[i];
+  document.getElementById("main-view").style.display = "none";
+  document.getElementById("day-view").style.display = "block";
+  document.getElementById("dv-num").textContent = `День ${i + 1} из ${DAYS.length}`;
+  document.getElementById("dv-title").textContent = `${d.emoji} ${d.title}`;
+  document.getElementById("dv-desc").textContent = d.desc;
+  document.getElementById("dv-video").innerHTML =
+    `<iframe src="https://www.youtube-nocookie.com/embed/${d.video}" title="${d.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+  document.getElementById("dv-vt").textContent = d.vt;
+  document.getElementById("dv-link").href = `https://www.youtube.com/watch?v=${d.video}`;
+  document.getElementById("dv-fact").innerHTML = d.fact;
+  document.getElementById("dv-q").textContent = d.q;
+
+  const opts = document.getElementById("dv-opts");
+  opts.innerHTML = "";
+  const shuffled = d.opts.map((t, idx) => ({ t, idx })).sort(() => Math.random() - 0.5);
+  shuffled.forEach(o => {
+    const b = document.createElement("button");
+    b.className = "quiz-opt";
+    b.textContent = o.t;
+    b.onclick = () => answer(b, o.idx === d.correct);
+    opts.appendChild(b);
+  });
+  const res = document.getElementById("dv-result");
+  res.className = "quiz-result";
+  res.textContent = "";
+
+  const doneBtn = document.getElementById("dv-done");
+  const isDone = getDone().includes(i);
+  doneBtn.disabled = isDone;
+  doneBtn.textContent = isDone ? "✅ Этот день уже пройден" : "✔ День пройден!";
+  window.scrollTo({ top: 0 });
+}
+
+function answer(btn, ok) {
+  const res = document.getElementById("dv-result");
+  document.querySelectorAll(".quiz-opt").forEach(b => { b.classList.remove("correct", "wrong"); });
+  if (ok) {
+    btn.classList.add("correct");
+    res.textContent = "🎉 Правильно! Ты молодец!";
+    res.className = "quiz-result ok";
+  } else {
+    btn.classList.add("wrong");
+    res.textContent = "🤔 Не совсем. Попробуй ещё раз!";
+    res.className = "quiz-result no";
+  }
+}
+
+function markDone() {
+  const done = getDone();
+  if (!done.includes(currentDay)) {
+    done.push(currentDay);
+    saveDone(done);
+  }
+  showMain();
+}
+
+function showMain() {
+  document.getElementById("day-view").style.display = "none";
+  document.getElementById("dv-video").innerHTML = "";
+  document.getElementById("main-view").style.display = "block";
+  renderGrid();
+}
+
+renderGrid();
+</script>
+</body>
+</html>
