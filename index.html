@@ -4,48 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Тренды в питании: как есть вкусно и не толстеть</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #fff8f3;
-    --card: #ffffff;
-    --ink: #2d2a32;
-    --muted: #7a7580;
-    --accent: #ff6b6b;
-    --accent2: #845ef7;
-    --green: #2f9e44;
-    --green-bg: #ebfbee;
+    --bg: #ffe9f2;
+    --dots: #ffd6e6;
+    --card: #fffafc;
+    --ink: #43273b;
+    --muted: #a8798f;
+    --accent: #ff4f8b;
+    --accent2: #ff87ab;
+    --border: #ffd0e2;
+    --green: #4ca964;
+    --green-bg: #eafbef;
     --yellow: #e8930c;
-    --yellow-bg: #fff9db;
-    --red: #e03131;
-    --red-bg: #fff0f0;
-    --radius: 20px;
-    --shadow: 0 4px 20px rgba(45, 42, 50, .08);
+    --yellow-bg: #fff8e1;
+    --red: #e2447a;
+    --red-bg: #ffe8f0;
+    --radius: 22px;
+    --shadow: 0 4px 18px rgba(255, 79, 139, .14);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: var(--bg);
+    font-family: 'Comfortaa', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: var(--bg);
+    background-image: radial-gradient(var(--dots) 12%, transparent 13%), radial-gradient(var(--dots) 12%, transparent 13%);
+    background-size: 46px 46px;
+    background-position: 0 0, 23px 23px;
     color: var(--ink);
-    line-height: 1.6;
+    line-height: 1.65;
   }
   .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
 
   header {
     text-align: center;
-    padding: 48px 16px 24px;
+    padding: 40px 16px 20px;
   }
+  .kitty { width: 96px; height: auto; display: block; margin: 0 auto 6px; }
   header h1 {
-    font-size: clamp(28px, 6vw, 44px);
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    font-size: clamp(26px, 6vw, 42px);
+    background: linear-gradient(90deg, #e6397a, var(--accent2));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     margin-bottom: 8px;
   }
-  header p { color: var(--muted); font-size: 17px; max-width: 520px; margin: 0 auto; }
+  header p { color: var(--muted); font-size: 16px; max-width: 540px; margin: 0 auto; }
 
   .progress-box {
     background: var(--card);
+    border: 2px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 20px 24px;
@@ -53,10 +64,10 @@
   }
   .progress-label {
     display: flex; justify-content: space-between; align-items: center;
-    font-weight: 600; margin-bottom: 10px; font-size: 15px;
+    font-weight: 700; margin-bottom: 10px; font-size: 15px;
   }
   .progress-track {
-    height: 14px; border-radius: 7px; background: #f1edf7; overflow: hidden;
+    height: 14px; border-radius: 7px; background: #ffe0ec; overflow: hidden;
   }
   .progress-fill {
     height: 100%; width: 0%;
@@ -66,99 +77,102 @@
   }
   #all-done {
     display: none; margin-top: 12px; text-align: center; font-weight: 700;
-    color: var(--accent2); font-size: 17px;
+    color: var(--accent); font-size: 17px;
   }
 
   h2.section {
-    font-size: 24px; margin: 48px 0 16px;
+    font-size: 23px; margin: 46px 0 16px;
     display: flex; align-items: center; gap: 10px;
   }
 
   .food-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-  .food-card { border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
-  .food-card.green { background: var(--green-bg); }
-  .food-card.yellow { background: var(--yellow-bg); }
-  .food-card.red { background: var(--red-bg); }
-  .food-card h3 { font-size: 17px; margin-bottom: 4px; }
+  .food-card { border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); border: 2px solid var(--border); }
+  .food-card.green { background: var(--green-bg); border-color: #c9ecd4; }
+  .food-card.yellow { background: var(--yellow-bg); border-color: #f5e5b8; }
+  .food-card.red { background: var(--red-bg); border-color: #ffc4d8; }
+  .food-card h3 { font-size: 16px; margin-bottom: 4px; }
   .food-card.green h3 { color: var(--green); }
   .food-card.yellow h3 { color: var(--yellow); }
   .food-card.red h3 { color: var(--red); }
   .food-card .sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
   .food-card ul { list-style: none; }
-  .food-card li { padding: 3px 0; font-size: 15px; }
+  .food-card li { padding: 3px 0; font-size: 14px; }
 
   .fastfood-block {
-    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
-    padding: 24px;
+    background: var(--card); border: 2px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 24px;
   }
   .fastfood-block p { margin-bottom: 12px; }
   .consequences { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 8px; }
   .cons-item {
-    background: var(--red-bg); border-radius: 14px; padding: 12px 14px; font-size: 15px;
+    background: var(--red-bg); border-radius: 16px; padding: 12px 14px; font-size: 14px;
   }
   .cons-item b { display: block; margin-bottom: 2px; }
   .fastfood-note {
-    margin-top: 16px; background: var(--green-bg); border-radius: 14px; padding: 12px 16px; font-size: 15px;
+    margin-top: 16px; background: var(--green-bg); border-radius: 16px; padding: 12px 16px; font-size: 14px;
   }
 
   .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
   .day-card {
-    background: var(--card); border: none; border-radius: var(--radius); box-shadow: var(--shadow);
+    background: var(--card); border: 2px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
     padding: 18px 16px; text-align: left; cursor: pointer; font-family: inherit; color: inherit;
     transition: transform .15s ease, box-shadow .15s ease;
     position: relative;
   }
-  .day-card:hover { transform: translateY(-3px); box-shadow: 0 8px 26px rgba(45,42,50,.14); }
+  .day-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255, 79, 139, .24); border-color: var(--accent2); }
   .day-card .emoji { font-size: 30px; }
-  .day-card .num { font-size: 12px; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: .05em; margin-top: 8px; }
-  .day-card .t { font-size: 15px; font-weight: 700; line-height: 1.3; margin-top: 2px; }
+  .day-card .num { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; margin-top: 8px; }
+  .day-card .t { font-size: 14px; font-weight: 700; line-height: 1.35; margin-top: 2px; }
   .day-card .done-badge {
     position: absolute; top: 12px; right: 12px; font-size: 20px; display: none;
   }
-  .day-card.done { background: var(--green-bg); }
+  .day-card.done { background: #ffe4ef; border-color: var(--accent2); }
   .day-card.done .done-badge { display: block; }
 
   /* Day view */
   #day-view { display: none; }
   .back-btn {
-    background: var(--card); border: none; border-radius: 12px; box-shadow: var(--shadow);
-    padding: 10px 18px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;
+    background: var(--card); border: 2px solid var(--border); border-radius: 14px; box-shadow: var(--shadow);
+    padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
     margin: 24px 0 20px; color: var(--ink);
   }
-  .back-btn:hover { background: #f6f1fb; }
-  .day-head .num { color: var(--accent2); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 14px; }
-  .day-head h2 { font-size: clamp(22px, 5vw, 32px); margin: 4px 0 10px; }
-  .day-head p.desc { color: var(--muted); font-size: 16px; margin-bottom: 20px; max-width: 640px; }
+  .back-btn:hover { background: #ffeef5; border-color: var(--accent2); }
+  .day-head .num { color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 13px; }
+  .day-head h2 { font-size: clamp(21px, 5vw, 30px); margin: 4px 0 10px; }
+  .day-head p.desc { color: var(--muted); font-size: 15px; margin-bottom: 20px; max-width: 640px; }
 
   .video-box {
     background: #000; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    border: 3px solid var(--border);
     aspect-ratio: 16 / 9;
   }
   .video-box iframe { width: 100%; height: 100%; border: 0; display: block; }
   .video-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 12px 0 28px; }
-  .video-meta .vt { font-size: 14px; color: var(--muted); }
+  .video-meta .vt { font-size: 13px; color: var(--muted); }
   .yt-link {
-    font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none;
-    background: var(--red-bg); padding: 8px 14px; border-radius: 10px; white-space: nowrap;
+    font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none;
+    background: var(--red-bg); padding: 8px 14px; border-radius: 12px; white-space: nowrap;
   }
   .yt-link:hover { text-decoration: underline; }
 
   .fact-box {
-    background: linear-gradient(135deg, #f3edff, #ffeef0);
-    border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; font-size: 15px;
+    background: linear-gradient(135deg, #ffe4ef, #fff3e9);
+    border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; font-size: 14px;
   }
-  .fact-box b { color: var(--accent2); }
+  .fact-box b { color: var(--accent); }
 
-  .quiz-box { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
-  .quiz-box h3 { font-size: 17px; margin-bottom: 4px; }
-  .quiz-box .q { font-size: 16px; margin-bottom: 14px; }
+  .quiz-box { background: var(--card); border: 2px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+  .quiz-box h3 { font-size: 16px; margin-bottom: 4px; }
+  .quiz-box .q { font-size: 15px; margin-bottom: 14px; }
   .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
   .quiz-opt {
-    text-align: left; font-family: inherit; font-size: 15px; padding: 12px 16px;
-    border-radius: 12px; border: 2px solid #eee7f5; background: #faf8fd; cursor: pointer; color: var(--ink);
+    text-align: left; font-family: inherit; font-size: 14px; padding: 12px 16px;
+    border-radius: 14px; border: 2px solid var(--border); background: #fff6fa; cursor: pointer; color: var(--ink);
     transition: border-color .15s;
   }
-  .quiz-opt:hover { border-color: var(--accent2); }
+  .quiz-opt:hover { border-color: var(--accent); }
   .quiz-opt.correct { border-color: var(--green); background: var(--green-bg); font-weight: 700; }
   .quiz-opt.wrong { border-color: var(--red); background: var(--red-bg); }
   .quiz-result { margin-top: 14px; font-weight: 700; display: none; }
@@ -166,11 +180,11 @@
   .quiz-result.no { color: var(--red); display: block; }
 
   .mark-done {
-    margin-top: 20px; width: 100%; padding: 14px; font-size: 16px; font-weight: 700;
-    border: none; border-radius: 14px; cursor: pointer; font-family: inherit;
+    margin-top: 20px; width: 100%; padding: 14px; font-size: 15px; font-weight: 700;
+    border: none; border-radius: 16px; cursor: pointer; font-family: inherit;
     background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff;
   }
-  .mark-done:disabled { background: var(--green); cursor: default; }
+  .mark-done:disabled { background: var(--accent2); cursor: default; }
 
   footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 64px; }
 </style>
@@ -179,25 +193,53 @@
 <div class="wrap">
 
   <header>
-    <h1>🍓 Тренды в питании</h1>
+    <svg class="kitty" viewBox="0 0 130 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- ушки -->
+      <path d="M26 34 Q22 8 42 16 Q52 20 56 26 Z" fill="#fff" stroke="#43273b" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M104 34 Q108 8 88 16 Q78 20 74 26 Z" fill="#fff" stroke="#43273b" stroke-width="3.5" stroke-linejoin="round"/>
+      <!-- мордочка -->
+      <ellipse cx="65" cy="58" rx="48" ry="38" fill="#fff" stroke="#43273b" stroke-width="3.5"/>
+      <!-- глазки -->
+      <ellipse cx="46" cy="58" rx="4.5" ry="6" fill="#43273b"/>
+      <ellipse cx="84" cy="58" rx="4.5" ry="6" fill="#43273b"/>
+      <!-- носик -->
+      <ellipse cx="65" cy="68" rx="5.5" ry="4" fill="#ffb703" stroke="#43273b" stroke-width="2"/>
+      <!-- улыбка -->
+      <path d="M58 78 Q65 84 72 78" fill="none" stroke="#43273b" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- румянец -->
+      <ellipse cx="34" cy="70" rx="6" ry="3.5" fill="#ffc2d6"/>
+      <ellipse cx="96" cy="70" rx="6" ry="3.5" fill="#ffc2d6"/>
+      <!-- усики -->
+      <g stroke="#43273b" stroke-width="2.5" stroke-linecap="round">
+        <line x1="14" y1="52" x2="0" y2="48"/><line x1="14" y1="62" x2="-1" y2="62"/><line x1="14" y1="72" x2="0" y2="76"/>
+        <line x1="116" y1="52" x2="130" y2="48"/><line x1="116" y1="62" x2="131" y2="62"/><line x1="116" y1="72" x2="130" y2="76"/>
+      </g>
+      <!-- бантик -->
+      <g stroke="#43273b" stroke-width="3" stroke-linejoin="round">
+        <path d="M88 18 Q78 8 74 20 Q72 27 82 30 Z" fill="#ff4f8b"/>
+        <path d="M88 18 Q100 6 104 18 Q106 26 94 29 Z" fill="#ff4f8b"/>
+        <circle cx="88" cy="22" r="6.5" fill="#ff87ab"/>
+      </g>
+    </svg>
+    <h1>🎀 Тренды в питании 🎀</h1>
     <p>Как есть вкусно — и не толстеть. 14 дней — 14 коротких тем с видео: смотри по одному в день, отвечай на вопрос и собирай прогресс!</p>
   </header>
 
   <div class="progress-box">
     <div class="progress-label">
-      <span>Твой прогресс</span>
+      <span>💗 Твой прогресс</span>
       <span id="progress-text">0 из 14</span>
     </div>
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-    <div id="all-done">🎉 Ура! Ты прошла весь курс! Теперь ты знаешь про еду больше многих взрослых!</div>
+    <div id="all-done">🎀🎉 Ура! Ты прошла весь курс! Теперь ты знаешь про еду больше многих взрослых!</div>
   </div>
 
   <div id="main-view">
 
-    <h2 class="section" style="margin-top: 8px;">🎬 Видео: вся правда о еде</h2>
+    <h2 class="section" style="margin-top: 8px;">🎀 Видео: вся правда о еде</h2>
     <div class="days-grid" id="days-grid"></div>
 
-    <h2 class="section">🚦 База: что есть, а что — пореже</h2>
+    <h2 class="section">🌸 База: что есть, а что — пореже</h2>
     <div class="food-cols">
       <div class="food-card green">
         <h3>🟢 Можно каждый день</h3>
@@ -273,11 +315,11 @@
       <p class="q" id="dv-q"></p>
       <div class="quiz-opts" id="dv-opts"></div>
       <p class="quiz-result" id="dv-result"></p>
-      <button class="mark-done" id="dv-done" onclick="markDone()">✔ День пройден!</button>
+      <button class="mark-done" id="dv-done" onclick="markDone()">🎀 День пройден!</button>
     </div>
   </div>
 
-  <footer>Сделано с ❤️ для Миланы · Видео принадлежат их авторам на YouTube</footer>
+  <footer>Сделано с 💗 для Миланы · Видео принадлежат их авторам на YouTube</footer>
 </div>
 
 <script>
@@ -413,7 +455,7 @@ function renderGrid() {
     const btn = document.createElement("button");
     btn.className = "day-card" + (done.includes(i) ? " done" : "");
     btn.onclick = () => showDay(i);
-    btn.innerHTML = `<span class="done-badge">✅</span><div class="emoji">${d.emoji}</div><div class="num">День ${i + 1}</div><div class="t">${d.title}</div>`;
+    btn.innerHTML = `<span class="done-badge">💖</span><div class="emoji">${d.emoji}</div><div class="num">День ${i + 1}</div><div class="t">${d.title}</div>`;
     grid.appendChild(btn);
   });
   updateProgress();
@@ -459,7 +501,7 @@ function showDay(i) {
   const doneBtn = document.getElementById("dv-done");
   const isDone = getDone().includes(i);
   doneBtn.disabled = isDone;
-  doneBtn.textContent = isDone ? "✅ Этот день уже пройден" : "✔ День пройден!";
+  doneBtn.textContent = isDone ? "💖 Этот день уже пройден" : "🎀 День пройден!";
   window.scrollTo({ top: 0 });
 }
 
@@ -468,7 +510,7 @@ function answer(btn, ok) {
   document.querySelectorAll(".quiz-opt").forEach(b => { b.classList.remove("correct", "wrong"); });
   if (ok) {
     btn.classList.add("correct");
-    res.textContent = "🎉 Правильно! Ты молодец!";
+    res.textContent = "🎀🎉 Правильно! Ты молодец!";
     res.className = "quiz-result ok";
   } else {
     btn.classList.add("wrong");
